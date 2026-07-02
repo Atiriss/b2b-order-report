@@ -2721,9 +2721,9 @@ function renderTable(b,s,w,q) {
   if(s) rows = rows.filter(function(r){return r[2]===s;});
   if(w) rows = rows.filter(function(r){return r[11]===w;});
   if(q) { var lq=q.toLowerCase(); rows=rows.filter(function(r){return r.slice(0,8).some(function(v){return String(v||'').toLowerCase().indexOf(lq)!==-1;});}); }
-  document.getElementById('filterCount').textContent = 'Total: '+rows.length+' rows';
+  document.getElementById('filterCount').textContent = rows.length + ' 条';
   var tbody = document.querySelector('#detailTable tbody');
-  var show = rows.slice(0, 200);
+  var show = rows;
   var html = '';
   for(var i=0; i<show.length; i++) {
     var r = show[i];
