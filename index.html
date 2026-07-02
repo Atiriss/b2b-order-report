@@ -933,10 +933,6 @@ const ALL = [
   ["FDB2026070212142041144","KONO","待备货","2026-07-01","天美韵生物科技河北有限公司","河北省","石家庄市","【KONO轻盈控油洗发水8ml*4连包】",1464,1464,4,"荣庆仓"]
 ];
 
-const brandList = ["KONO", "WIS", "\u8d6b\u7cfb"];
-const statusList = ["\u5f02\u5e38\u5b8c\u7ed3", "\u5f85\u51fa\u5e93", "\u5f85\u5907\u8d27", "\u5f85\u5ba1\u6838", "\u5f85\u6536\u8d27"];
-const whList = ["", "\u4ece\u5316\u4ed3-\u5de8\u6c83\uff08\u65b0\uff09", "\u5e7f\u5dde\u4e4c\u6258\u90a6", "\u8363\u5e86\u4ed3"];
-
 function renderTable(b,s,w,q) {
   let rows = ALL;
   if(b) rows = rows.filter(r => r[1]===b);
@@ -961,23 +957,16 @@ document.getElementById('filterBrand').onchange = function(){renderTable(this.va
 document.getElementById('filterStatus').onchange = function(){renderTable(document.getElementById('filterBrand').value,this.value,document.getElementById('filterWarehouse').value,document.getElementById('filterSearch').value);};
 document.getElementById('filterWarehouse').onchange = function(){renderTable(document.getElementById('filterBrand').value,document.getElementById('filterStatus').value,this.value,document.getElementById('filterSearch').value);};
 document.getElementById('filterSearch').oninput = function(){renderTable(document.getElementById('filterBrand').value,document.getElementById('filterStatus').value,document.getElementById('filterWarehouse').value,this.value);};
-
 renderTable('','','','');
 
 const C = ['#1a73e8','#34a853','#fbbc04','#ea4335','#8e24aa','#00acc1','#fb8c00','#6d4c41','#3949ab','#43a047','#00897b','#c0ca33','#546e7a','#e53935','#5c6bc0'];
 
 new Chart(document.getElementById('chartTrend'),{type:'line',data:{labels:["2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26", "2026-06-27", "2026-06-29", "2026-06-30", "2026-07-01"],datasets:[{label:'订单数',data:[21, 61, 19, 18, 18, 21, 128, 45],borderColor:'#1a73e8',backgroundColor:'rgba(26,115,232,0.08)',fill:true,tension:0.35,pointRadius:5,pointBackgroundColor:'#1a73e8'}]},options:{responsive:true,plugins:{legend:{display:false}}}});
-
 new Chart(document.getElementById('chartBrand'),{type:'doughnut',data:{labels:["WIS", "KONO", "\u8d6b\u7cfb"],datasets:[{data:[154, 124, 53],backgroundColor:C,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
-
 new Chart(document.getElementById('chartStatus'),{type:'bar',data:{labels:["\u5f85\u6536\u8d27", "\u5f85\u5907\u8d27", "\u5f85\u5ba1\u6838", "\u5f02\u5e38\u5b8c\u7ed3", "\u5f85\u51fa\u5e93"],datasets:[{label:'订单数',data:[268, 37, 19, 4, 3],backgroundColor:['#34a853','#fbbc04','#1a73e8','#ea4335','#8e24aa'],borderRadius:6}]},options:{responsive:true,plugins:{legend:{display:false}}}});
-
 new Chart(document.getElementById('chartWarehouse'),{type:'doughnut',data:{labels:["\u4ece\u5316\u4ed3-\u5de8\u6c83\uff08\u65b0\uff09", "\u8363\u5e86\u4ed3", "\u5e7f\u5dde\u4e4c\u6258\u90a6", ""],datasets:[{data:[246, 79, 5, 1],backgroundColor:C,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
-
 new Chart(document.getElementById('chartProvince'),{type:'bar',data:{labels:["\u5e7f\u4e1c\u7701", "\u56db\u5ddd\u7701", "\u6cb3\u5357\u7701", "\u6d59\u6c5f\u7701", "\u91cd\u5e86\u5e02", "\u6c5f\u82cf\u7701", "\u5b89\u5fbd\u7701", "\u5c71\u4e1c\u7701", "\u4e91\u5357\u7701", "\u5e7f\u897f\u58ee\u65cf\u81ea\u6cbb\u533a", "\u6e56\u5317\u7701", "\u9655\u897f\u7701", "\u6e56\u5357\u7701", "\u798f\u5efa\u7701", "\u8fbd\u5b81\u7701"],datasets:[{label:'订单数',data:[63, 24, 21, 20, 18, 17, 17, 16, 16, 14, 13, 13, 12, 10, 8],backgroundColor:'#1a73e8',borderRadius:4}]},options:{responsive:true,indexAxis:'y',plugins:{legend:{display:false}}}});
-
 new Chart(document.getElementById('chartCustomer'),{type:'bar',data:{labels:["\u6210\u90fd\u4e09\u5feb\u5728\u7ebf\u79d1\u6280\u6709\u9650\u516c\u53f8", "\u6b66\u6c49\u5c48\u81e3\u6c0f\u4e2a\u4eba\u7528\u54c1\u5546\u5e97\u6709\u9650\u516c\u53f8", "\u5e7f\u5dde\u51e1\u666f\u65e5\u5316\u6709\u9650\u516c\u53f8", "\u5e7f\u4e1c\u6da6\u534e\u5546\u4e1a\u6709\u9650\u516c\u53f8", "\u5e7f\u5dde\u7f8e\u5929\u60e0\u8d38\u6613\u53d1\u5c55\u6709\u9650\u516c\u53f8", "\u798f\u5efa\u4e91\u901a\u4f9b\u5e94\u94fe\u6709\u9650\u516c\u53f8", "\u4e1c\u839e\u5e02\u76df\u5ba2\u4f9b\u5e94\u94fe\u79d1\u6280\u6709\u9650\u516c\u53f8", "", "\u9655\u897f\u5fb7\u5347\u6052\u5546\u8d38\u6709\u9650\u516c\u53f8", "\u91cd\u5e86\u4e91\u4f17\u5546\u9053\u4f9b\u5e94\u94fe\u7ba1\u7406\u6709\u9650\u516c\u53f8", "\u5eb7\u6210\u6295\u8d44\uff08\u4e2d\u56fd\uff09\u6709\u9650\u516c\u53f8", "\u6210\u90fd\u5e02\u5965\u7279\u4e50\u5546\u4e1a\u7ba1\u7406\u6709\u9650\u516c\u53f8"],datasets:[{label:'订单数',data:[98, 24, 17, 14, 12, 10, 10, 8, 5, 5, 5, 4],backgroundColor:'#34a853',borderRadius:4}]},options:{responsive:true,indexAxis:'y',plugins:{legend:{display:false}}}});
-
 new Chart(document.getElementById('chartProduct'),{type:'bar',data:{labels:["WIS\u9690\u5f62\u6c34\u6da6\u9762\u819c(\u7ecf\u5178\u6b3e)25\u2026", "WIS\u73bb\u5c3f\u9178\u6781\u6da6\u9762\u819c3.0_25\u2026", "\uff08\u7ecf\u5178\uff09KONO \u65c5\u884c\u6d17\u62a4\u5957\u88c56\u2026", "KONO \u5361\u5398\u63a7\u6cb9\u84ec\u677e\u6d17\u53d1\u6c3450\u2026", "KONO\u795b\u5c51\u6e05\u723d\u6d17\u53d1\u9999\u4e73500m\u2026", "KONO\u5361\u5398\u65c5\u884c\u6d17\u62a4\u5957\u88c560ml\u00d73", "KONO \u5361\u5398\u63a7\u6cb9\u84ec\u677e\u6d17\u53d1\u6c3475\u2026", "KONO\u8f7b\u76c8\u63a7\u6cb9\u6d17\u53d1\u6c348ml*4\u8fde\u5305", "\uff08\u65b0\u9999\u6c1b\uff09KONO\u6ecb\u6da6\u9999\u6c1b\u62a4\u53d1\u7d20\u2026", "KONO \u5361\u5398\u63a7\u6cb9\u84ec\u677e\u6d17\u53d1\u6c34\uff08\u8336\u2026"],datasets:[{label:'出货量',data:[60345, 34150, 23952, 16730, 14611, 14582, 14341, 12432, 10936, 9912],backgroundColor:'#fbbc04',borderRadius:4}]},options:{responsive:true,indexAxis:'y',plugins:{legend:{display:false}}}});
 </script>
 </body>
