@@ -7,76 +7,118 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; background:#f0f2f5; color:#333; }
-.header { background:linear-gradient(135deg,#1a73e8,#0d47a1); color:#fff; padding:28px 36px; }
-.header h1 { font-size:26px; font-weight:700; margin-bottom:6px; }
-.header p { opacity:0.85; font-size:14px; }
-.container { max-width:1440px; margin:0 auto; padding:24px; }
-.cards { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px; }
-.card { background:#fff; border-radius:12px; padding:22px 24px; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
-.card .label { font-size:13px; color:#888; margin-bottom:6px; }
-.card .value { font-size:30px; font-weight:700; color:#1a73e8; }
-.card .sub { font-size:12px; color:#aaa; margin-top:4px; }
-.charts { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px; }
+body { font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; background:#f5f6fa; color:#1e293b; line-height:1.5; }
+
+/* Header */
+.header { position:relative; background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 20%,#1a56db 100%); color:#fff; padding:32px 40px; overflow:hidden; }
+.header::before { content:''; position:absolute; top:-80px; right:-80px; width:320px; height:320px; background:rgba(255,255,255,0.03); border-radius:50%; }
+.header::after { content:''; position:absolute; top:20px; right:180px; width:180px; height:180px; background:rgba(255,255,255,0.02); border-radius:50%; }
+.header-inner { position:relative; z-index:1; }
+.header h1 { font-size:24px; font-weight:700; letter-spacing:-0.3px; margin-bottom:6px; }
+.header p { opacity:0.7; font-size:13px; font-weight:400; letter-spacing:0.2px; }
+
+/* Container */
+.container { max-width:1440px; margin:0 auto; padding:28px 32px; }
+
+/* Stats Cards */
+.cards { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:28px; }
+.card { position:relative; background:#fff; border-radius:14px; padding:20px 24px; box-shadow:0 1px 2px rgba(0,0,0,0.04),0 2px 8px rgba(0,0,0,0.02); border:1px solid #f1f5f9; transition:all 0.2s; cursor:default; overflow:hidden; }
+.card:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,0.06); border-color:#e2e8f0; }
+.card::after { content:''; position:absolute; top:0; left:0; width:4px; height:100%; }
+.card:nth-child(1)::after { background:#3b82f6; }
+.card:nth-child(2)::after { background:#10b981; }
+.card:nth-child(3)::after { background:#f59e0b; }
+.card:nth-child(4)::after { background:#8b5cf6; }
+.card .label { font-size:12px; color:#94a3b8; margin-bottom:8px; font-weight:500; letter-spacing:0.5px; text-transform:uppercase; }
+.card .value { font-size:28px; font-weight:700; color:#0f172a; letter-spacing:-0.5px; }
+.card .sub { font-size:11px; color:#94a3b8; margin-top:4px; }
+
+/* Section Title */
+.section-title { font-size:16px; font-weight:700; color:#0f172a; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+.section-title::before { content:''; width:4px; height:18px; background:#3b82f6; border-radius:2px; }
+
+/* Charts Grid */
+.charts { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:28px; }
 .charts .wide { grid-column:1 / -1; }
-.chart-box { background:#fff; border-radius:12px; padding:22px; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
-.chart-box h3 { font-size:15px; font-weight:600; margin-bottom:14px; color:#333; }
-.chart-box canvas { max-height:340px; }
-.table-box { background:#fff; border-radius:12px; padding:22px; box-shadow:0 1px 3px rgba(0,0,0,0.08); overflow:hidden; }
-.table-box h3 { font-size:15px; font-weight:600; margin-bottom:14px; }
-table { width:100%; border-collapse:collapse; font-size:13px; }
-th { background:#f8f9fa; padding:10px 12px; text-align:left; font-weight:600; border-bottom:2px solid #e0e0e0; white-space:nowrap; position:sticky; top:0; z-index:1; }
-td { padding:8px 12px; border-bottom:1px solid #f2f2f2; max-width:300px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-tr:hover { background:#f6f9ff; }
-.status { display:inline-block; padding:2px 10px; border-radius:12px; font-size:12px; font-weight:500; }
-.status-已完结 { background:#e0f2f1; color:#00695c; }
-.status-待收货 { background:#e8f5e9; color:#2e7d32; }
-.status-待备货 { background:#fff3e0; color:#e65100; }
-.status-待审核 { background:#e3f2fd; color:#1565c0; }
-.status-待出库 { background:#f3e5f5; color:#7b1fa2; }
-.status-异常完结 { background:#fbe9e7; color:#c62828; }
-.filters { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:12px; }
-.filters select,.filters input { padding:8px 12px; border:1px solid #d0d5dd; border-radius:6px; font-size:13px; background:#fff; }
-.filters input { width:240px; }
-.table-scroll { max-height:600px; overflow-y:auto; border:1px solid #eee; border-radius:8px; }
+.chart-box { background:#fff; border-radius:14px; padding:20px 24px; box-shadow:0 1px 2px rgba(0,0,0,0.04),0 2px 8px rgba(0,0,0,0.02); border:1px solid #f1f5f9; }
+.chart-box h3 { font-size:14px; font-weight:600; margin-bottom:14px; color:#475569; display:flex; align-items:center; gap:6px; }
+.chart-box canvas { max-height:320px; }
+
+/* Table */
+.table-box { background:#fff; border-radius:14px; padding:20px 24px; box-shadow:0 1px 2px rgba(0,0,0,0.04),0 2px 8px rgba(0,0,0,0.02); border:1px solid #f1f5f9; overflow:hidden; }
+table { width:100%; border-collapse:collapse; font-size:12.5px; }
+th { background:#f8fafc; padding:10px 14px; text-align:left; font-weight:600; font-size:11.5px; color:#64748b; text-transform:uppercase; letter-spacing:0.3px; border-bottom:1px solid #e2e8f0; white-space:nowrap; position:sticky; top:0; z-index:1; }
+td { padding:9px 14px; border-bottom:1px solid #f1f5f9; max-width:300px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#334155; }
+tr { transition:background 0.15s; }
+tr:hover td { background:#f8fafc; }
+
+/* Status Badges */
+.status { display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:600; letter-spacing:0.2px; }
+.status-已完结 { background:#ecfdf5; color:#059669; }
+.status-待收货 { background:#eff6ff; color:#2563eb; }
+.status-待备货 { background:#fffbeb; color:#d97706; }
+.status-待审核 { background:#f0fdf4; color:#16a34a; }
+.status-待出库 { background:#faf5ff; color:#7c3aed; }
+.status-异常完结 { background:#fef2f2; color:#dc2626; }
+
+/* Filters */
+.filters { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:14px; padding:12px 14px; background:#f8fafc; border-radius:10px; border:1px solid #f1f5f9; }
+.filters select,.filters input { padding:7px 12px; border:1px solid #e2e8f0; border-radius:8px; font-size:12.5px; background:#fff; color:#334155; outline:none; transition:border-color 0.2s,box-shadow 0.2s; }
+.filters select:focus,.filters input:focus { border-color:#3b82f6; box-shadow:0 0 0 3px rgba(59,130,246,0.08); }
+.filters input[type="date"] { width:135px; }
+.filters input[type="text"] { width:220px; }
+.filters .filter-sep { font-size:12px; color:#94a3b8; padding:0 2px; }
+.filters .filter-count { font-size:12px; color:#64748b; margin-left:auto; font-weight:500; background:#fff; padding:5px 10px; border-radius:6px; border:1px solid #e2e8f0; }
+
+/* Scrollable Table */
+.table-scroll { max-height:580px; overflow-y:auto; border:1px solid #f1f5f9; border-radius:10px; }
+.table-scroll::-webkit-scrollbar { width:6px; }
+.table-scroll::-webkit-scrollbar-track { background:#f8fafc; }
+.table-scroll::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:3px; }
+
+/* Responsive */
+@media (max-width:1024px) { .cards { grid-template-columns:repeat(2,1fr); } .charts { grid-template-columns:1fr; } }
+@media (max-width:640px) { .cards { grid-template-columns:1fr; } .container { padding:16px; } .header { padding:20px 24px; } }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <h1>&#x1f4e6; B2B 订单数据报表</h1>
-  <p>2026-06-02 ~ 2026-07-01  |  1055 笔订单  ·  2625 条明细</p>
+  <div class="header-inner">
+    <h1>B2B 订单数据报表</h1>
+    <p>2026-06-02 ~ 2026-07-01  ·  1055 笔订单  ·  2625 条明细</p>
+  </div>
 </div>
 
 <div class="container">
   <div class="cards">
-    <div class="card"><div class="label">📋 订单总数</div><div class="value">1055</div><div class="sub">2625 条明细</div></div>
-    <div class="card"><div class="label">📦 总件数</div><div class="value">776,602</div><div class="sub">平均 736 件/单</div></div>
-    <div class="card"><div class="label">⚖️ 总重量</div><div class="value">267,346</div><div class="sub">kg</div></div>
-    <div class="card"><div class="label">📐 总箱数</div><div class="value">45,018</div><div class="sub">平均 42 箱/单</div></div>
+    <div class="card"><div class="label">订单总数</div><div class="value">1055</div><div class="sub">2625 条明细</div></div>
+    <div class="card"><div class="label">总件数</div><div class="value">776,602</div><div class="sub">平均 736 件/单</div></div>
+    <div class="card"><div class="label">总重量</div><div class="value">267,346</div><div class="sub">kg</div></div>
+    <div class="card"><div class="label">总箱数</div><div class="value">45,018</div><div class="sub">平均 42 箱/单</div></div>
   </div>
 
   <div class="charts">
-    <div class="chart-box"><h3>📈 订单趋势</h3><canvas id="chartTrend"></canvas></div>
-    <div class="chart-box"><h3>🏷️ 品牌分布</h3><canvas id="chartBrand"></canvas></div>
-    <div class="chart-box"><h3>📬 订单状态</h3><canvas id="chartStatus"></canvas></div>
-    <div class="chart-box"><h3>🏭 发货仓库</h3><canvas id="chartWarehouse"></canvas></div>
-    <div class="chart-box wide"><h3>🗺️ 省份 TOP 15</h3><canvas id="chartProvince"></canvas></div>
-    <div class="chart-box"><h3>👥 TOP 12 客户</h3><canvas id="chartCustomer"></canvas></div>
-    <div class="chart-box"><h3>📦 TOP 10 热销产品</h3><canvas id="chartProduct"></canvas></div>
+    <div class="chart-box"><h3>订单趋势</h3><canvas id="chartTrend"></canvas></div>
+    <div class="chart-box"><h3>品牌分布</h3><canvas id="chartBrand"></canvas></div>
+    <div class="chart-box"><h3>订单状态</h3><canvas id="chartStatus"></canvas></div>
+    <div class="chart-box"><h3>发货仓库</h3><canvas id="chartWarehouse"></canvas></div>
+    <div class="chart-box wide"><h3>省份分布 TOP 15</h3><canvas id="chartProvince"></canvas></div>
+    <div class="chart-box"><h3>TOP 12 客户</h3><canvas id="chartCustomer"></canvas></div>
+    <div class="chart-box"><h3>TOP 10 热销产品</h3><canvas id="chartProduct"></canvas></div>
   </div>
 
   <div class="table-box">
-    <h3>📋 明细列表（共 2625 条）</h3>
+    <h3>明细列表（共 2625 条）</h3>
     <div class="filters">
       <select id="filterBrand"><option value="">全部品牌</option><option>KONO</option><option>WIS</option><option>赫系</option></select>
       <select id="filterStatus"><option value="">全部状态</option><option>已冻结</option><option>已完结</option><option>异常完结</option><option>待出库</option><option>待备货</option><option>待审核</option><option>待收货</option></select>
       <select id="filterWarehouse"><option value="">全部仓库</option><option></option><option>从化仓-巨沃（新）</option><option>广州乌托邦</option><option>荣庆仓</option></select>
-      <input type="date" id="filterDateStart" style="width:140px;" title="开始日期">
-      <span style="font-size:13px;color:#888;">至</span>
-      <input type="date" id="filterDateEnd" style="width:140px;" title="结束日期">
+      <input type="date" id="filterDateStart" title="开始日期">
+      <span class="filter-sep">至</span>
+      <input type="date" id="filterDateEnd" title="结束日期">
       <input type="text" id="filterSearch" placeholder="搜索客户 / 产品 / 地区...">
-      <span style="font-size:13px;color:#888;" id="filterCount"></span>
+      <span class="filter-count" id="filterCount"></span>
     </div>
     <div class="table-scroll">
       <table id="detailTable">
