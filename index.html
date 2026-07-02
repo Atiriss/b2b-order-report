@@ -44,41 +44,41 @@ tr:hover { background:#f6f9ff; }
 <body>
 
 <div class="header">
-  <h1>&#x1f4e6; B2B Order Dashboard</h1>
-  <p>2026-06-02 ~ 2026-07-01  |  1055 orders  ·  2625 line items</p>
+  <h1>&#x1f4e6; B2B 订单数据报表</h1>
+  <p>2026-06-02 ~ 2026-07-01  |  1055 笔订单  ·  2625 条明细</p>
 </div>
 
 <div class="container">
   <div class="cards">
-    <div class="card"><div class="label">Orders</div><div class="value">1055</div><div class="sub">2625 line items</div></div>
-    <div class="card"><div class="label">Total Qty</div><div class="value">776,602</div><div class="sub">avg 736 / order</div></div>
-    <div class="card"><div class="label">Total Weight</div><div class="value">267,346</div><div class="sub">kg</div></div>
-    <div class="card"><div class="label">Total Boxes</div><div class="value">45,018</div><div class="sub">avg 42 / order</div></div>
+    <div class="card"><div class="label">📋 订单总数</div><div class="value">1055</div><div class="sub">2625 条明细</div></div>
+    <div class="card"><div class="label">📦 总件数</div><div class="value">776,602</div><div class="sub">平均 736 件/单</div></div>
+    <div class="card"><div class="label">⚖️ 总重量</div><div class="value">267,346</div><div class="sub">kg</div></div>
+    <div class="card"><div class="label">📐 总箱数</div><div class="value">45,018</div><div class="sub">平均 42 箱/单</div></div>
   </div>
 
   <div class="charts">
-    <div class="chart-box"><h3>Order Trend by Date</h3><canvas id="chartTrend"></canvas></div>
-    <div class="chart-box"><h3>Brands</h3><canvas id="chartBrand"></canvas></div>
-    <div class="chart-box"><h3>Status</h3><canvas id="chartStatus"></canvas></div>
-    <div class="chart-box"><h3>Warehouse</h3><canvas id="chartWarehouse"></canvas></div>
-    <div class="chart-box wide"><h3>Top 15 Provinces</h3><canvas id="chartProvince"></canvas></div>
-    <div class="chart-box"><h3>Top 12 Customers</h3><canvas id="chartCustomer"></canvas></div>
-    <div class="chart-box"><h3>Top 10 Products (by qty)</h3><canvas id="chartProduct"></canvas></div>
+    <div class="chart-box"><h3>📈 订单趋势</h3><canvas id="chartTrend"></canvas></div>
+    <div class="chart-box"><h3>🏷️ 品牌分布</h3><canvas id="chartBrand"></canvas></div>
+    <div class="chart-box"><h3>📬 订单状态</h3><canvas id="chartStatus"></canvas></div>
+    <div class="chart-box"><h3>🏭 发货仓库</h3><canvas id="chartWarehouse"></canvas></div>
+    <div class="chart-box wide"><h3>🗺️ 省份 TOP 15</h3><canvas id="chartProvince"></canvas></div>
+    <div class="chart-box"><h3>👥 TOP 12 客户</h3><canvas id="chartCustomer"></canvas></div>
+    <div class="chart-box"><h3>📦 TOP 10 热销产品</h3><canvas id="chartProduct"></canvas></div>
   </div>
 
   <div class="table-box">
-    <h3>Details (2625 rows)</h3>
+    <h3>📋 明细列表（共 2625 条）</h3>
     <div class="filters">
-      <select id="filterBrand"><option value="">All Brands</option><option>KONO</option><option>WIS</option><option>赫系</option></select>
-      <select id="filterStatus"><option value="">All Status</option><option>已冻结</option><option>已完结</option><option>异常完结</option><option>待出库</option><option>待备货</option><option>待审核</option><option>待收货</option></select>
-      <select id="filterWarehouse"><option value="">All Warehouses</option><option></option><option>从化仓-巨沃（新）</option><option>广州乌托邦</option><option>荣庆仓</option></select>
-      <input type="text" id="filterSearch" placeholder="Search customer / product / region...">
+      <select id="filterBrand"><option value="">全部品牌</option><option>KONO</option><option>WIS</option><option>赫系</option></select>
+      <select id="filterStatus"><option value="">全部状态</option><option>已冻结</option><option>已完结</option><option>异常完结</option><option>待出库</option><option>待备货</option><option>待审核</option><option>待收货</option></select>
+      <select id="filterWarehouse"><option value="">全部仓库</option><option></option><option>从化仓-巨沃（新）</option><option>广州乌托邦</option><option>荣庆仓</option></select>
+      <input type="text" id="filterSearch" placeholder="搜索客户 / 产品 / 地区...">
       <span style="font-size:13px;color:#888;" id="filterCount"></span>
     </div>
     <div class="table-scroll">
       <table id="detailTable">
         <thead>
-          <tr><th>Order ID</th><th>Brand</th><th>Status</th><th>Date</th><th>Customer</th><th>Province</th><th>City</th><th>Product</th><th>Plan Qty</th><th>Actual</th><th>Box</th><th>Warehouse</th></tr>
+          <tr><th>订单编号</th><th>品牌</th><th>状态</th><th>日期</th><th>客户</th><th>省</th><th>市</th><th>产品</th><th>应发</th><th>实发</th><th>箱</th><th>仓库</th></tr>
         </thead>
         <tbody></tbody>
       </table>
