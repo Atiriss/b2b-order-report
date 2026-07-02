@@ -72,6 +72,9 @@ tr:hover { background:#f6f9ff; }
       <select id="filterBrand"><option value="">全部品牌</option><option>KONO</option><option>WIS</option><option>赫系</option></select>
       <select id="filterStatus"><option value="">全部状态</option><option>已冻结</option><option>已完结</option><option>异常完结</option><option>待出库</option><option>待备货</option><option>待审核</option><option>待收货</option></select>
       <select id="filterWarehouse"><option value="">全部仓库</option><option></option><option>从化仓-巨沃（新）</option><option>广州乌托邦</option><option>荣庆仓</option></select>
+      <input type="date" id="filterDateStart" style="width:140px;" title="开始日期">
+      <span style="font-size:13px;color:#888;">至</span>
+      <input type="date" id="filterDateEnd" style="width:140px;" title="结束日期">
       <input type="text" id="filterSearch" placeholder="搜索客户 / 产品 / 地区...">
       <span style="font-size:13px;color:#888;" id="filterCount"></span>
     </div>
@@ -2715,11 +2718,13 @@ var ALL = [
   ["FDB2026070212142041144","KONO","待备货","2026-07-01","天美韵生物科技河北有限公司","河北省","石家庄市","【KONO轻盈控油洗发水8ml*4连包】",1464,1464,4,"荣庆仓"]
 ];
 
-function renderTable(b,s,w,q) {
+function renderTable(b,s,w,ds,de,q) {
   var rows = ALL;
   if(b) rows = rows.filter(function(r){return r[1]===b;});
   if(s) rows = rows.filter(function(r){return r[2]===s;});
   if(w) rows = rows.filter(function(r){return r[11]===w;});
+  if(ds) rows = rows.filter(function(r){return r[3]>=ds;});
+  if(de) rows = rows.filter(function(r){return r[3]<=de;});
   if(q) { var lq=q.toLowerCase(); rows=rows.filter(function(r){return r.slice(0,8).some(function(v){return String(v||'').toLowerCase().indexOf(lq)!==-1;});}); }
   document.getElementById('filterCount').textContent = rows.length + ' 条';
   var tbody = document.querySelector('#detailTable tbody');
@@ -2744,11 +2749,23 @@ function renderTable(b,s,w,q) {
   }
   tbody.innerHTML = html;
 }
-document.getElementById('filterBrand').onchange = function(){renderTable(this.value,document.getElementById('filterStatus').value,document.getElementById('filterWarehouse').value,document.getElementById('filterSearch').value);};
-document.getElementById('filterStatus').onchange = function(){renderTable(document.getElementById('filterBrand').value,this.value,document.getElementById('filterWarehouse').value,document.getElementById('filterSearch').value);};
-document.getElementById('filterWarehouse').onchange = function(){renderTable(document.getElementById('filterBrand').value,document.getElementById('filterStatus').value,this.value,document.getElementById('filterSearch').value);};
-document.getElementById('filterSearch').oninput = function(){renderTable(document.getElementById('filterBrand').value,document.getElementById('filterStatus').value,document.getElementById('filterWarehouse').value,this.value);};
-renderTable('','','','');
+document.getElementById('filterBrand').onchange = applyFilters;
+document.getElementById('filterStatus').onchange = applyFilters;
+document.getElementById('filterWarehouse').onchange = applyFilters;
+document.getElementById('filterDateStart').onchange = applyFilters;
+document.getElementById('filterDateEnd').onchange = applyFilters;
+document.getElementById('filterSearch').oninput = applyFilters;
+function applyFilters(){
+  renderTable(
+    document.getElementById('filterBrand').value,
+    document.getElementById('filterStatus').value,
+    document.getElementById('filterWarehouse').value,
+    document.getElementById('filterDateStart').value,
+    document.getElementById('filterDateEnd').value,
+    document.getElementById('filterSearch').value
+  );
+}
+renderTable('','','','','','');
 
 var C = ['#1a73e8','#34a853','#fbbc04','#ea4335','#8e24aa','#00acc1','#fb8c00','#6d4c41','#3949ab','#43a047','#00897b','#c0ca33','#546e7a','#e53935','#5c6bc0'];
 
